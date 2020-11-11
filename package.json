@@ -1,0 +1,36 @@
+{
+  "name": "@kravc/identity",
+  "version": "1.0.0",
+  "description": "Library to operate self-sovereign identity",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/alexkravets/identity.git"
+  },
+  "directories": {
+    "src": "src"
+  },
+  "scripts": {
+    "test": "eslint src/ && NODE_PATH=./src nyc mocha \"./src/**/*.spec.js\""
+  },
+  "author": "Alexander Kravets <a@kra.vc>",
+  "license": "ISC",
+  "dependencies": {
+    "@kravc/schema": "^2.0.0",
+    "@transmute/did-key-ed25519": "^0.2.1-unstable.23",
+    "create-hash": "^1.2.0",
+    "jsonld": "^3.2.0",
+    "lodash.defaults": "^4.2.0",
+    "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.12.1",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0"
+  },
+  "nyc": {
+    "include": "src",
+    "exclude": "**/*.spec.js"
+  }
+}
