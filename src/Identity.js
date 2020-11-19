@@ -2,6 +2,7 @@
 
 const ld        = require('./ld')
 const jwt       = require('./jwt')
+const Buffer    = require('safe-buffer').Buffer
 const defaults  = require('lodash.defaults')
 const validator = require('validator')
 const { Ed25519KeyPair } = require('@transmute/did-key-ed25519')
