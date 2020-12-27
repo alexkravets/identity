@@ -7,10 +7,9 @@ const { EdDSA: { sign } } = require('@transmute/did-key-ed25519')
 const { createAccountCredential }    = require('../../node_modules/@kravc/schema/examples')
 const { getKid, createPresentation } = require('../helpers')
 
-const SEED_LENGTH   = 32
-const ISSUER_SEED   = crypto.randomBytes(SEED_LENGTH).toString('hex')
-const HOLDER_SEED   = crypto.randomBytes(SEED_LENGTH).toString('hex')
-const VERIFIER_SEED = crypto.randomBytes(SEED_LENGTH).toString('hex')
+const ISSUER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const HOLDER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const VERIFIER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
 
 describe('jwt/verify(token)', () => {
   let issuer

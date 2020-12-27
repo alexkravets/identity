@@ -9,10 +9,9 @@ const {
   createMineSweeperScoreCredential
 } = require('../node_modules/@kravc/schema/examples')
 
-const SEED_LENGTH   = 32
-const HOLDER_SEED   = crypto.randomBytes(SEED_LENGTH).toString('hex')
-const ISSUER_SEED   = crypto.randomBytes(SEED_LENGTH).toString('hex')
-const VERIFIER_SEED = crypto.randomBytes(SEED_LENGTH).toString('hex')
+const HOLDER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const ISSUER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const VERIFIER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
 
 const createScoreCredential = (issuerId, holderId) => {
   const playerResult = {

@@ -8,7 +8,13 @@ const validator = require('validator')
 const { Ed25519KeyPair } = require('@transmute/did-key-ed25519')
 const { resolve, isVerifiablePresentation } = require('./helpers')
 
+const SEED_LENGTH = 32
+
 class Identity {
+  static get SEED_LENGTH() {
+    return SEED_LENGTH
+  }
+
   static async fromSeed(seedHex) {
     const keyPair = await Ed25519KeyPair.generate({
       secureRandom: () => Buffer.from(seedHex, 'hex')
