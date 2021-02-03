@@ -1,8 +1,8 @@
 'use strict'
 
+const { verifyDetached }      = require('../suite')
 const getVerifiableDigest     = require('./getVerifiableDigest')
 const { resolvePublicKeyJwk } = require('../helpers')
-const { EdDSA: { verifyDetached } } = require('@transmute/did-key-ed25519')
 
 const verifyProof = async (verifiableInput, signerId) => {
   const { proof } = verifiableInput
@@ -27,7 +27,7 @@ const verifyProof = async (verifiableInput, signerId) => {
   let isVerified
 
   try {
-    isVerified = verifyDetached(jws, credentialDigestBuffer, publicKeyJwk)
+    isVerified = await verifyDetached(jws, credentialDigestBuffer, publicKeyJwk)
 
   } catch (error) {
     throw new Error(`Unable to verify proof: ${error.message}`)

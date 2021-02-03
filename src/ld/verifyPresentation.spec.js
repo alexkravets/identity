@@ -5,7 +5,7 @@ const Identity                       = require('Identity')
 const { expect }                     = require('chai')
 const verifyPresentation             = require('./verifyPresentation')
 const getVerifiableDigest            = require('./getVerifiableDigest')
-const { EdDSA: { signDetached } }    = require('@transmute/did-key-ed25519')
+const { alg, type, signDetached }    = require('../suite')
 const { createAccountCredential }    = require('../../node_modules/@kravc/schema/examples')
 const { getKid, createPresentation } = require('../helpers')
 
@@ -28,9 +28,8 @@ describe('ld/verifyPresentation(verifiablePresentation)', () => {
     const vp = createPresentation(undefined, [ credential ], 'did:OTHER_HOLDER')
     const proofPurpose = 'assertionMethod'
 
-    const kid  = await getKid(holder.did, proofPurpose)
-    const did  = holder.did
-    const type = 'Ed25519Signature2018'
+    const kid = await getKid(holder.did, proofPurpose)
+    const did = holder.did
     const verificationMethod = `${did}${kid}`
 
     const proof = {
@@ -50,9 +49,9 @@ describe('ld/verifyPresentation(verifiablePresentation)', () => {
 
     const privateKeyJwk = await holder._keyPair.toJwk(true)
     const jws = await signDetached(buffer, privateKeyJwk, {
-      alg:  'EdDSA',
       b64:  false,
-      crit: [ 'b64' ]
+      crit: [ 'b64' ],
+      alg
     })
 
     const mismatchPresentation = {

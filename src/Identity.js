@@ -1,11 +1,11 @@
 'use strict'
 
-const ld        = require('./ld')
-const jwt       = require('./jwt')
-const Buffer    = require('safe-buffer').Buffer
-const defaults  = require('lodash.defaults')
-const validator = require('validator')
-const { Ed25519KeyPair } = require('@transmute/did-key-ed25519')
+const ld          = require('./ld')
+const jwt         = require('./jwt')
+const Buffer      = require('safe-buffer').Buffer
+const defaults    = require('lodash.defaults')
+const validator   = require('validator')
+const { KeyPair } = require('./suite')
 const { resolve, isVerifiablePresentation } = require('./helpers')
 
 const SEED_LENGTH = 32
@@ -16,7 +16,7 @@ class Identity {
   }
 
   static async fromSeed(seedHex) {
-    const keyPair = await Ed25519KeyPair.generate({
+    const keyPair = await KeyPair.generate({
       secureRandom: () => Buffer.from(seedHex, 'hex')
     })
 

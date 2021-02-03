@@ -1,7 +1,7 @@
 'use strict'
 
-const { getKid } = require('../helpers')
-const { EdDSA: { sign } } = require('@transmute/did-key-ed25519')
+const { getKid }    = require('../helpers')
+const { sign, alg } = require('../suite')
 
 const issueCredential = async (vc, options) => {
   const { issuer, privateKeyJwk, expirationDate } = options
@@ -31,8 +31,8 @@ const issueCredential = async (vc, options) => {
   }
 
   const token = await sign(payload, privateKeyJwk, {
-    alg: 'EdDSA',
     typ: 'JWT',
+    alg,
     kid
   })
 

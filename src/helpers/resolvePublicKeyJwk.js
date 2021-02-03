@@ -1,9 +1,6 @@
 'use strict'
 
-const {
-  driver:   { resolve },
-  keyUtils: { publicKeyJwkFromPublicKeyBase58 }
-} = require('@transmute/did-key-ed25519')
+const { resolve, publicKeyJwkFromPublicKeyBase58 } = require('../suite')
 
 const resolvePublicKeyJwk = async (url) => {
   const [ did, keyId ] = url.split('#')
@@ -16,7 +13,8 @@ const resolvePublicKeyJwk = async (url) => {
     throw new Error(`Public key "${did}${kid}" is not found`)
   }
 
-  const { publicKeyBase58 } = verificationMethod
+  const { publicKeyBase58  } = verificationMethod
+
   const jwk = publicKeyJwkFromPublicKeyBase58(publicKeyBase58)
 
   return jwk

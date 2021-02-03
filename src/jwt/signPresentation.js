@@ -1,8 +1,7 @@
 'use strict'
 
-const { getKid }             = require('../helpers')
-const { EdDSA: { sign } }    = require('@transmute/did-key-ed25519')
-const { createPresentation } = require('../helpers')
+const { sign, alg } = require('../suite')
+const { getKid, createPresentation } = require('../helpers')
 
 const signPresentation = async (id, holder, credentials, options) => {
   const vp = createPresentation(id, credentials, holder)
@@ -55,8 +54,8 @@ const signPresentation = async (id, holder, credentials, options) => {
   }
 
   const token = await sign(payload, privateKeyJwk, {
-    alg: 'EdDSA',
     typ: 'JWT',
+    alg,
     kid
   })
 

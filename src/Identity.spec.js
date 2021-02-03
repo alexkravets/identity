@@ -1,6 +1,7 @@
 'use strict'
 
 const crypto     = require('crypto')
+const { type }   = require('./suite')
 const Identity   = require('./Identity')
 const { isJWT }  = require('validator')
 const { expect } = require('chai')
@@ -200,7 +201,7 @@ describe('Identity', () => {
             type: 'VerifiablePresentation',
             holder: holder.did,
             proof: {
-              type: 'Ed25519Signature2018',
+              type,
               created,
               proofPurpose: 'authentication',
               verificationMethod,

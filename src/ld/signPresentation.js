@@ -1,7 +1,7 @@
 'use strict'
 
 const getVerifiableDigest            = require('./getVerifiableDigest')
-const { EdDSA: { signDetached } }    = require('@transmute/did-key-ed25519')
+const { alg, type, signDetached }    = require('../suite')
 const { getKid, createPresentation } = require('../helpers')
 
 const signPresentation = async (id, holder, credentials, options) => {
@@ -15,9 +15,8 @@ const signPresentation = async (id, holder, credentials, options) => {
     privateKeyJwk
   } = options
 
-  const kid     = await getKid(holder, proofPurpose)
-  const did     = holder
-  const type    = 'Ed25519Signature2018'
+  const kid = await getKid(holder, proofPurpose)
+  const did = holder
   const created = new Date().toISOString()
   const verificationMethod = `${did}${kid}`
 
@@ -50,9 +49,9 @@ const signPresentation = async (id, holder, credentials, options) => {
   const proofValue = buffer.toString('hex')
 
   const jws = await signDetached(buffer, privateKeyJwk, {
-    alg:  'EdDSA',
     b64:  false,
-    crit: [ 'b64' ]
+    crit: [ 'b64' ],
+    alg
   })
 
   return {

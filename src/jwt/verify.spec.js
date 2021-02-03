@@ -1,9 +1,9 @@
 'use strict'
 
-const crypto     = require('crypto')
-const Identity   = require('Identity')
-const { expect } = require('chai')
-const { EdDSA: { sign } } = require('@transmute/did-key-ed25519')
+const crypto        = require('crypto')
+const Identity      = require('Identity')
+const { expect }    = require('chai')
+const { sign, alg } = require('../suite')
 const { createAccountCredential }    = require('../../node_modules/@kravc/schema/examples')
 const { getKid, createPresentation } = require('../helpers')
 
@@ -32,8 +32,8 @@ describe('jwt/verify(token)', () => {
 
     const privateKeyJwk = await holder._keyPair.toJwk(true)
     const invalidToken = await sign(payload, privateKeyJwk, {
-      alg: 'EdDSA',
       typ: 'JWT',
+      alg,
       kid
     })
 
@@ -61,8 +61,8 @@ describe('jwt/verify(token)', () => {
 
     const privateKeyJwk = await issuer._keyPair.toJwk(true)
     const mismatchToken = await sign(payload, privateKeyJwk, {
-      alg: 'EdDSA',
       typ: 'JWT',
+      alg,
       kid
     })
 
@@ -90,8 +90,8 @@ describe('jwt/verify(token)', () => {
 
     const privateKeyJwk = await holder._keyPair.toJwk(true)
     const mismatchToken = await sign(payload, privateKeyJwk, {
-      alg: 'EdDSA',
       typ: 'JWT',
+      alg,
       kid
     })
 
@@ -122,8 +122,8 @@ describe('jwt/verify(token)', () => {
 
     const privateKeyJwk = await holder._keyPair.toJwk(true)
     const mismatchToken = await sign(payload, privateKeyJwk, {
-      alg: 'EdDSA',
       typ: 'JWT',
+      alg,
       kid
     })
 

@@ -1,8 +1,8 @@
 'use strict'
 
 const verifyCredential        = require('../ld/verifyCredential')
+const { decode, verify }      = require('../suite')
 const { resolvePublicKeyJwk } = require('../helpers')
-const { EdDSA: { decode, verify } } = require('@transmute/did-key-ed25519')
 
 module.exports = async (token) => {
   const { header: { kid }, payload: { iss: issuer } } = await decode(token, { complete: true })

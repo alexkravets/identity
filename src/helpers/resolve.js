@@ -1,6 +1,6 @@
 'use strict'
 
-const { driver: { resolve } } = require('@transmute/did-key-ed25519')
+const { resolve } = require('../suite')
 
 module.exports = async (url) => {
   const { didDocument } = await resolve(url)
