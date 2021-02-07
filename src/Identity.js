@@ -1,12 +1,13 @@
 'use strict'
 
-const ld          = require('./ld')
-const jwt         = require('./jwt')
-const Buffer      = require('safe-buffer').Buffer
-const defaults    = require('lodash.defaults')
-const validator   = require('validator')
-const { KeyPair } = require('./suite')
+const ld        = require('./ld')
+const jwt       = require('./jwt')
+const Buffer    = require('safe-buffer').Buffer
+const defaults  = require('lodash.defaults')
+const validator = require('validator')
+
 const { resolve, isVerifiablePresentation } = require('./helpers')
+const { KeyPair, publicKeyUInt8ArrayFromPublicKeyBase58 } = require('./suite')
 
 const SEED_LENGTH = 32
 
@@ -43,6 +44,18 @@ class Identity {
     }
 
     return ld.verifyCredential(verifiableInput)
+  }
+
+  static async resolvePublicKeyHex(did, methodId = 'authentication') {
+    const didDocument = await resolve(did)
+
+    const [ keyId ] = didDocument[methodId]
+    const verificationMethod  = didDocument.verificationMethod.find(key => key.id === keyId)
+    const { publicKeyBase58 } = verificationMethod
+
+    const recipientPublicKeyHex = publicKeyUInt8ArrayFromPublicKeyBase58(publicKeyBase58)
+
+    return recipientPublicKeyHex
   }
 
   constructor(keyPair) {

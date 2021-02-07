@@ -45,5 +45,6 @@ module.exports = {
   resolve,
   signDetached,
   verifyDetached,
-  publicKeyJwkFromPublicKeyBase58
+  publicKeyJwkFromPublicKeyBase58,
+  publicKeyUInt8ArrayFromPublicKeyBase58
 }

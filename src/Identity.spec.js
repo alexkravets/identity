@@ -50,6 +50,13 @@ describe('Identity', () => {
     })
   })
 
+  describe('.resolvePublicKeyHex(did)', () => {
+    it('returns public key hex for did', async () => {
+      const publicKeyHex = await Identity.resolvePublicKeyHex(holder.did)
+      expect(publicKeyHex).to.exist
+    })
+  })
+
   describe('Verifiable Credentials', () => {
     let unsignedCredential
 
