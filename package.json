@@ -1,6 +1,6 @@
 {
   "name": "@kravc/identity",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Library to operate self-sovereign identity.",
   "keywords": [
     "SSI",
@@ -29,8 +29,8 @@
   "license": "ISC",
   "dependencies": {
     "@kravc/schema": "^2.0.0",
-    "@transmute/did-key-ed25519": "^0.2.1-unstable.31",
-    "@transmute/did-key-secp256k1": "^0.2.1-unstable.31",
+    "@transmute/did-key-ed25519": "^0.2.1-unstable.35",
+    "@transmute/did-key-secp256k1": "^0.2.1-unstable.35",
     "js-sha512": "^0.8.0",
     "jsonld": "^3.2.0",
     "lodash.defaults": "^4.2.0",
