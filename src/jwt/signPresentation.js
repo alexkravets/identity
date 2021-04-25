@@ -11,7 +11,8 @@ const signPresentation = async (id, holder, credentials, options) => {
     domain,
     challenge,
     proofPurpose,
-    privateKeyJwk
+    privateKeyJwk,
+    expirationDate
   } = options
 
   const created = new Date().getTime()
@@ -51,6 +52,10 @@ const signPresentation = async (id, holder, credentials, options) => {
 
   if (challenge) {
     payload.vp.proof.challenge = challenge
+  }
+
+  if (expirationDate) {
+    payload.exp = new Date(expirationDate).getTime()
   }
 
   const token = await sign(payload, privateKeyJwk, {

@@ -234,8 +234,9 @@ describe('Identity', () => {
 
     describe('JWT', () => {
       describe('.createPresentation(credentials, options = {})', () => {
-        it('returns authentication presentation', async () => {
-          const token = await holder.createPresentation([], { format: 'jwt' })
+        it('returns authentication presentation with expiration date', async () => {
+          const expirationDate = Date.now() + 1000 * 60
+          const token = await holder.createPresentation([], { format: 'jwt', proofOptions: { expirationDate } })
 
           expect(isJWT(token)).to.be.true
         })
@@ -298,14 +299,16 @@ describe('Identity', () => {
         })
 
         it('returns payload for verified presentation', async () => {
+          const expirationDate = Date.now() + 1000 * 60
           const token = await holder.createPresentation([ credential1, credential2 ], {
             format: 'jwt',
-            proofOptions: { challenge, domain }
+            proofOptions: { challenge, domain, expirationDate }
           })
 
           const payload = await verifier.verify(token)
 
           expect(payload).to.exist
+          expect(payload.exp).to.exist
           expect(payload.vp.verifiableCredential).to.have.lengthOf(2)
         })
       })
