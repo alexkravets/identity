@@ -47,10 +47,11 @@ describe('Identity', () => {
     it('creates identity instance from seed', async () => {
       expect(holder).to.exist
       expect(holder.did).to.exist
+      expect(holder.privateKey).to.exist
     })
   })
 
-  describe('.resolvePublicKeyHex(did)', () => {
+  describe('Identity.resolvePublicKeyHex(did)', () => {
     it('returns public key hex for did', async () => {
       const publicKeyHex = await Identity.resolvePublicKeyHex(holder.did)
       expect(publicKeyHex).to.exist
