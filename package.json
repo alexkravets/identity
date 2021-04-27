@@ -1,6 +1,6 @@
 {
   "name": "@kravc/identity",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Library to operate self-sovereign identity.",
   "keywords": [
     "SSI",

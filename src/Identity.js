@@ -67,6 +67,10 @@ class Identity {
     return did
   }
 
+  get publicKey() {
+    return this._keyPair.publicKeyBuffer.toString('hex')
+  }
+
   get privateKey() {
     return this._keyPair.privateKeyBuffer.toString('hex')
   }

@@ -47,6 +47,7 @@ describe('Identity', () => {
     it('creates identity instance from seed', async () => {
       expect(holder).to.exist
       expect(holder.did).to.exist
+      expect(holder.publicKey).to.exist
       expect(holder.privateKey).to.exist
     })
   })
