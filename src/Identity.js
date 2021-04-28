@@ -2,6 +2,7 @@
 
 const ld        = require('./ld')
 const jwt       = require('./jwt')
+const sha256    = require('js-sha256')
 const Buffer    = require('safe-buffer').Buffer
 const defaults  = require('lodash.defaults')
 const validator = require('validator')
@@ -14,6 +15,10 @@ const SEED_LENGTH = 32
 class Identity {
   static get SEED_LENGTH() {
     return SEED_LENGTH
+  }
+
+  static get DEFAULT_AUTHORIZATION_TIMEOUT_MS() {
+    return 1000 * 30
   }
 
   static async fromSeed(seedHex) {
@@ -118,6 +123,22 @@ class Identity {
     }
 
     return ld.signPresentation(id, holder, credentials, proofOptions)
+  }
+
+  async createAuthorization(url, body = null, options = {}) {
+    const format         = 'jwt'
+    const domain         = url
+    const expirationDate = Date.now() + Identity.DEFAULT_AUTHORIZATION_TIMEOUT_MS
+
+    const proofOptions = { domain, expirationDate, ...options }
+
+    if (body) {
+      proofOptions.challenge = sha256(body)
+    }
+
+    const token = await this.createPresentation([], { format, proofOptions })
+
+    return token
   }
 
   verify(verifiableInput) {

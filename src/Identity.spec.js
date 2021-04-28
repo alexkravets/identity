@@ -1,6 +1,7 @@
 'use strict'
 
 const crypto     = require('crypto')
+const sha256     = require('js-sha256')
 const { type }   = require('./suite')
 const Identity   = require('./Identity')
 const { isJWT }  = require('validator')
@@ -313,6 +314,41 @@ describe('Identity', () => {
           expect(payload.exp).to.exist
           expect(payload.vp.verifiableCredential).to.have.lengthOf(2)
         })
+      })
+    })
+  })
+
+  describe('Authorization', () => {
+    describe('.createAuthorization(url, body = null, options = {})', () => {
+      it('returns authorization presentation token', async () => {
+        const url   = 'https://example.com/'
+        const body  = JSON.stringify({ example: 'payload' })
+        const token = await holder.createAuthorization(url, body)
+
+        expect(isJWT(token)).to.be.true
+
+        const payload = await verifier.verify(token)
+
+        expect(payload).to.exist
+        expect(payload.exp).to.exist
+        expect(payload.iss).to.eql(holder.did)
+        expect(payload.sub).to.eql(holder.did)
+        expect(payload.vp.proof.domain).to.eql(url)
+        expect(payload.vp.proof.challenge).to.eql(sha256(body))
+        expect(payload.vp.proof.proofPurpose).to.eql('authentication')
+      })
+
+      it('returns authorization presentation token without body', async () => {
+        const url   = 'https://example.com/'
+        const token = await holder.createAuthorization(url)
+
+        expect(isJWT(token)).to.be.true
+
+        const payload = await verifier.verify(token)
+
+        expect(payload).to.exist
+        expect(payload.vp.proof.domain).to.eql(url)
+        expect(payload.vp.proof.challenge).to.not.exist
       })
     })
   })
