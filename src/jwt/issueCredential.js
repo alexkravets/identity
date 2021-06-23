@@ -9,7 +9,7 @@ const issueCredential = async (vc, options) => {
   const kid = await getKid(issuer)
   const iss = issuer
   const jti = vc.id
-  const nbf = new Date().getTime()
+  const nbf = Math.round(new Date().getTime() / 1000)
   const sub = vc.credentialSubject.id
 
   const issuanceDate = new Date(nbf).toISOString()
@@ -26,7 +26,7 @@ const issueCredential = async (vc, options) => {
   }
 
   if (expirationDate) {
-    payload.exp = new Date(expirationDate).getTime()
+    payload.exp = Math.round(new Date(expirationDate).getTime() / 1000)
     payload.vc.expirationDate = new Date(expirationDate).toISOString()
   }
 

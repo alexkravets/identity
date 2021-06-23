@@ -291,7 +291,7 @@ describe('Identity', () => {
               id: 'https://example.com/presentations/PRESENTATION_ID',
               proof: {
                 challenge: 'CHALLENGE_ID',
-                created: nbf,
+                created: payload.vp.proof.created,
                 domain: 'example.org',
                 nonce: 'NONCE',
                 proofPurpose: 'authentication'
@@ -313,6 +313,24 @@ describe('Identity', () => {
           expect(payload).to.exist
           expect(payload.exp).to.exist
           expect(payload.vp.verifiableCredential).to.have.lengthOf(2)
+        })
+
+        it('throws an error if expired', async () => {
+          const expirationDate = Date.now() - 1000 * 60
+          const token = await holder.createPresentation([ credential1, credential2 ], {
+            format: 'jwt',
+            proofOptions: { challenge, domain, expirationDate }
+          })
+
+          try {
+            await verifier.verify(token)
+
+          } catch (error) {
+            return expect(error.message).to.eql('Token expired')
+
+          }
+
+          throw new Error('Error not thrown')
         })
       })
     })

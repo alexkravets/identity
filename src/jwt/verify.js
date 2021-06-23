@@ -16,7 +16,7 @@ module.exports = async (token) => {
 
   if (exp) {
     const now = new Date()
-    const isExpired = new Date(exp) < now
+    const isExpired = new Date(exp * 1000) < now
 
     if (isExpired) {
       throw new Error('Token expired')

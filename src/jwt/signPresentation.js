@@ -15,12 +15,14 @@ const signPresentation = async (id, holder, credentials, options) => {
     expirationDate
   } = options
 
-  const created = new Date().getTime()
+  const createdDate = new Date()
 
   const kid = await getKid(holder, proofPurpose)
   const iss = holder
   const sub = holder
-  const nbf = created
+  const nbf = Math.round(createdDate.getTime() / 1000)
+
+  const created = createdDate.toISOString()
 
   const proof = {
     created,
@@ -55,7 +57,7 @@ const signPresentation = async (id, holder, credentials, options) => {
   }
 
   if (expirationDate) {
-    payload.exp = new Date(expirationDate).getTime()
+    payload.exp = Math.round(new Date(expirationDate).getTime() / 1000)
   }
 
   const token = await sign(payload, privateKeyJwk, {
