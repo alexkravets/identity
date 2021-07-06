@@ -130,13 +130,14 @@ class Identity {
     const domain         = url
     const expirationDate = Date.now() + Identity.DEFAULT_AUTHORIZATION_TIMEOUT_MS
 
-    const proofOptions = { domain, expirationDate, ...options }
+    const { credentials = [], ..._proofOptions } = options
+    const proofOptions  = { domain, expirationDate, ..._proofOptions }
 
     if (body) {
       proofOptions.challenge = sha256(body)
     }
 
-    const token = await this.createPresentation([], { format, proofOptions })
+    const token = await this.createPresentation(credentials, { format, proofOptions })
 
     return token
   }
