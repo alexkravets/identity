@@ -51,6 +51,11 @@ class Identity {
     return ld.verifyCredential(verifiableInput)
   }
 
+  static async decodeJwt(verifiableInputJwt) {
+    const payload = await jwt.decode(verifiableInputJwt)
+    return payload
+  }
+
   static async resolvePublicKeyHex(did, methodId = 'authentication') {
     const didDocument = await resolve(did)
 

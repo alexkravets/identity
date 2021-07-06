@@ -60,6 +60,18 @@ describe('Identity', () => {
     })
   })
 
+  describe('Identity.decodeJwt(verifiableInputJwt)', () => {
+    it('returns payload of the verifiable input JWT', async () => {
+      const unsignedCredential = await createAccountCredential(holder.did, 'Holder')
+
+      const expirationDate = new Date(new Date().getTime() + 1000).toISOString()
+      const token = await issuer.issue(unsignedCredential, { format: 'jwt', expirationDate })
+
+      const payload = await Identity.decodeJwt(token)
+      expect(payload).to.exist
+    })
+  })
+
   describe('Verifiable Credentials', () => {
     let unsignedCredential
 
