@@ -212,10 +212,9 @@ describe('Identity', () => {
 
           const presentation = await verifier.verify(verifiablePresentation)
 
-          const { proof: { created, jws, proofValue, verificationMethod } } = presentation
+          const { proof: { created, jws, verificationMethod } } = presentation
 
           expect(presentation.proof.jws).to.exist
-          expect(presentation.proof.proofValue).to.exist
           expect(presentation.proof.verificationMethod).to.exist
 
           expect(presentation).to.eql({
@@ -230,8 +229,7 @@ describe('Identity', () => {
               nonce: 'NONCE',
               domain: 'example.org',
               challenge: 'CHALLENGE_ID',
-              jws,
-              proofValue
+              jws
             }
           })
         })

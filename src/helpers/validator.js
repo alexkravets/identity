@@ -5,7 +5,6 @@ const { Schema, Validator } = require('@kravc/schema')
 const proofSchema = new Schema({
   jws:                { required: true },
   type:               { required: true, enum: [ 'Ed25519Signature2018', 'EcdsaSecp256k1VerificationKey2019' ] },
-  proofValue:         { required: true },
   verificationMethod: { required: true }
 }, 'Proof')
 

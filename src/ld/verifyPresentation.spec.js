@@ -4,7 +4,7 @@ const crypto                         = require('crypto')
 const Identity                       = require('Identity')
 const { expect }                     = require('chai')
 const verifyPresentation             = require('./verifyPresentation')
-const getVerifiableDigest            = require('./getVerifiableDigest')
+const getVerifiableBuffer            = require('./getVerifiableBuffer')
 const { alg, type, signDetached }    = require('../suite')
 const { createAccountCredential }    = require('../../node_modules/@kravc/schema/examples')
 const { getKid, createPresentation } = require('../helpers')
@@ -44,11 +44,10 @@ describe('ld/verifyPresentation(verifiablePresentation)', () => {
       proof
     }
 
-    const [ buffer ] = await getVerifiableDigest(verifiablePresentation)
-    const proofValue = buffer.toString('hex')
+    const [ verifiableBuffer ] = await getVerifiableBuffer(verifiablePresentation)
 
     const privateKeyJwk = await holder._keyPair.toJwk(true)
-    const jws = await signDetached(buffer, privateKeyJwk, {
+    const jws = await signDetached(verifiableBuffer, privateKeyJwk, {
       b64:  false,
       crit: [ 'b64' ],
       alg
@@ -58,8 +57,7 @@ describe('ld/verifyPresentation(verifiablePresentation)', () => {
       ...verifiablePresentation,
       proof: {
         ...proof,
-        jws,
-        proofValue
+        jws
       }
     }
 

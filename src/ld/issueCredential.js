@@ -3,7 +3,7 @@
 const { getKid } = require('../helpers')
 const { alg, type, signDetached } = require('../suite')
 
-const getVerifiableDigest = require('./getVerifiableDigest')
+const getVerifiableBuffer = require('./getVerifiableBuffer')
 
 const issueCredential = async (credential, options) => {
   const { issuer, privateKeyJwk, expirationDate } = options
@@ -34,10 +34,9 @@ const issueCredential = async (credential, options) => {
     verifiableCredential.expirationDate = new Date(expirationDate).toISOString()
   }
 
-  const [ buffer ] = await getVerifiableDigest(verifiableCredential)
-  const proofValue = buffer.toString('hex')
+  const [ verifiableBuffer ] = await getVerifiableBuffer(verifiableCredential)
 
-  const jws = await signDetached(buffer, privateKeyJwk, {
+  const jws = await signDetached(verifiableBuffer, privateKeyJwk, {
     b64:  false,
     crit: [ 'b64' ],
     alg
@@ -47,8 +46,7 @@ const issueCredential = async (credential, options) => {
     ...verifiableCredential,
     proof: {
       ...proof,
-      jws,
-      proofValue
+      jws
     }
   }
 }

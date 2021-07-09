@@ -1,7 +1,7 @@
 'use strict'
 
 const { verifyDetached }      = require('../suite')
-const getVerifiableDigest     = require('./getVerifiableDigest')
+const getVerifiableBuffer     = require('./getVerifiableBuffer')
 const { resolvePublicKeyJwk } = require('../helpers')
 
 const verifyProof = async (verifiableInput, signerId) => {
@@ -14,20 +14,12 @@ const verifyProof = async (verifiableInput, signerId) => {
   }
 
   const publicKeyJwk = await resolvePublicKeyJwk(proof.verificationMethod)
-
-  const [ credentialDigestBuffer, jws, proofValue ] = await getVerifiableDigest(verifiableInput)
-
-  const credentialDigestHex  = credentialDigestBuffer.toString('hex')
-  const isProofValueMismatch = credentialDigestHex !== proofValue
-
-  if (isProofValueMismatch) {
-    throw new Error('Proof value mismatch')
-  }
+  const [ credentialVerifiableBuffer, jws ] = await getVerifiableBuffer(verifiableInput)
 
   let isVerified
 
   try {
-    isVerified = await verifyDetached(jws, credentialDigestBuffer, publicKeyJwk)
+    isVerified = await verifyDetached(jws, credentialVerifiableBuffer, publicKeyJwk)
 
   } catch (error) {
     throw new Error(`Unable to verify proof: ${error.message}`)

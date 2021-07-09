@@ -46,7 +46,7 @@ describe('ld/verifyProof(verifiableInput, signerId)', () => {
       await verifyProof(invalidCredential, issuer.did)
 
     } catch (error) {
-      return expect(error.message).to.eql('Proof value mismatch')
+      return expect(error.message).to.eql('Proof verification failed')
 
     }
 
@@ -61,7 +61,7 @@ describe('ld/verifyProof(verifiableInput, signerId)', () => {
       await verifyProof(invalidCredential, issuer.did)
 
     } catch (error) {
-      return expect(error.message).to.eql('Proof value mismatch')
+      return expect(error.message).to.eql('Proof verification failed')
 
     }
 

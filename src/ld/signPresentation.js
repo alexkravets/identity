@@ -1,6 +1,6 @@
 'use strict'
 
-const getVerifiableDigest            = require('./getVerifiableDigest')
+const getVerifiableBuffer            = require('./getVerifiableBuffer')
 const { alg, type, signDetached }    = require('../suite')
 const { getKid, createPresentation } = require('../helpers')
 
@@ -45,10 +45,9 @@ const signPresentation = async (id, holder, credentials, options) => {
     proof
   }
 
-  const [ buffer ] = await getVerifiableDigest(verifiablePresentation)
-  const proofValue = buffer.toString('hex')
+  const [ verifiableBuffer ] = await getVerifiableBuffer(verifiablePresentation)
 
-  const jws = await signDetached(buffer, privateKeyJwk, {
+  const jws = await signDetached(verifiableBuffer, privateKeyJwk, {
     b64:  false,
     crit: [ 'b64' ],
     alg
@@ -58,8 +57,7 @@ const signPresentation = async (id, holder, credentials, options) => {
     ...verifiablePresentation,
     proof: {
       ...proof,
-      jws,
-      proofValue
+      jws
     }
   }
 }
