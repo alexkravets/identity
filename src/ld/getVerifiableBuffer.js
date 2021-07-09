@@ -1,6 +1,6 @@
 'use strict'
 
-const Buffer       = require('safe-buffer').Buffer
+const Buffer       = require('buffer').Buffer
 const { canonize } = require('jsonld')
 const { documentLoader } = require('@kravc/schema')
 

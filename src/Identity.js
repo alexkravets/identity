@@ -3,7 +3,7 @@
 const ld        = require('./ld')
 const jwt       = require('./jwt')
 const sha256    = require('js-sha256')
-const Buffer    = require('safe-buffer').Buffer
+const Buffer    = require('buffer').Buffer
 const defaults  = require('lodash.defaults')
 const validator = require('validator')
 
