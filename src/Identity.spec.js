@@ -11,9 +11,7 @@ const {
   createMineSweeperScoreCredential
 } = require('../node_modules/@kravc/schema/examples')
 
-const HOLDER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
-const ISSUER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
-const VERIFIER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const randomBytes = length => crypto.randomBytes(length)
 
 const createScoreCredential = (issuerId, holderId) => {
   const playerResult = {
@@ -39,17 +37,22 @@ describe('Identity', () => {
   let verifier
 
   before(async () => {
-    holder   = await Identity.fromSeed(HOLDER_SEED)
-    issuer   = await Identity.fromSeed(ISSUER_SEED)
-    verifier = await Identity.fromSeed(VERIFIER_SEED)
+    holder   = await Identity.generate(randomBytes)
+    issuer   = await Identity.generate(randomBytes)
+    verifier = await Identity.generate(randomBytes)
   })
 
   describe('Identity.fromSeed(seedHex)', () => {
     it('creates identity instance from seed', async () => {
-      expect(holder).to.exist
-      expect(holder.did).to.exist
-      expect(holder.publicKey).to.exist
-      expect(holder.privateKey).to.exist
+      const identity = await Identity.generate(randomBytes)
+      const privateKey = identity.privateKey
+
+      const _identity = await Identity.fromSeed(privateKey)
+
+      expect(_identity).to.exist
+      expect(_identity.did).to.exist
+      expect(_identity.publicKey).to.exist
+      expect(_identity.privateKey).to.exist
     })
   })
 

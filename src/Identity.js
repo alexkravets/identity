@@ -8,7 +8,7 @@ const defaults  = require('lodash.defaults')
 const validator = require('validator')
 
 const { resolve, isVerifiablePresentation } = require('./helpers')
-const { KeyPair, publicKeyUInt8ArrayFromPublicKeyBase58 } = require('./suite')
+const { generate, publicKeyUInt8ArrayFromPublicKeyBase58 } = require('./suite')
 
 const SEED_LENGTH = 32
 
@@ -22,8 +22,16 @@ class Identity {
   }
 
   static async fromSeed(seedHex) {
-    const keyPair = await KeyPair.generate({
+    const keyPair = await generate({
       secureRandom: () => Buffer.from(seedHex, 'hex')
+    })
+
+    return new Identity(keyPair)
+  }
+
+  static async generate(randomBytes) {
+    const keyPair = await generate({
+      secureRandom: () => randomBytes(Identity.SEED_LENGTH)
     })
 
     return new Identity(keyPair)

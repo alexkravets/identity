@@ -9,7 +9,7 @@ const {
   keyUtils: { publicKeyJwkFromPublicKeyBase58, publicKeyUInt8ArrayFromPublicKeyBase58 }
 } = require('@transmute/did-key-secp256k1')
 
-const { Secp256k1KeyPair: KeyPair } = require('@transmute/did-key-secp256k1')
+const { Secp256k1KeyPair: { generate } } = require('@transmute/did-key-secp256k1')
 
 // TODO: https://github.com/transmute-industries/did-key.js/issues/63
 const verify = async (...args) => {
@@ -31,8 +31,8 @@ module.exports = {
   sign,
   verify,
   decode,
-  KeyPair,
   resolve,
+  generate,
   signDetached,
   verifyDetached,
   publicKeyJwkFromPublicKeyBase58,

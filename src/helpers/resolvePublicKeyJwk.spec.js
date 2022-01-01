@@ -5,13 +5,13 @@ const Identity   = require('Identity')
 const { expect } = require('chai')
 const resolvePublicKeyJwk = require('./resolvePublicKeyJwk')
 
-const SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const randomBytes = length => crypto.randomBytes(length)
 
 describe('helpers/resolvePublicKeyJwk(url)', () => {
   let identity
 
   before(async () => {
-    identity = await Identity.fromSeed(SEED)
+    identity = await Identity.generate(randomBytes)
   })
 
   it('returns public key JWK for URL', async () => {

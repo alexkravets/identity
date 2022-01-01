@@ -6,8 +6,7 @@ const { expect }  = require('chai')
 const verifyProof = require('./verifyProof')
 const { createAccountCredential } = require('../../node_modules/@kravc/schema/examples')
 
-const ISSUER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
-const HOLDER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const randomBytes = length => crypto.randomBytes(length)
 
 describe('ld/verifyProof(verifiableInput, signerId)', () => {
   let issuer
@@ -16,8 +15,8 @@ describe('ld/verifyProof(verifiableInput, signerId)', () => {
   let verifiableCredential
 
   before(async () => {
-    issuer = await Identity.fromSeed(ISSUER_SEED)
-    holder = await Identity.fromSeed(HOLDER_SEED)
+    issuer = await Identity.generate(randomBytes)
+    holder = await Identity.generate(randomBytes)
 
     unsignedCredential   = createAccountCredential(holder.did, 'Proof')
     verifiableCredential = await issuer.issue(unsignedCredential)

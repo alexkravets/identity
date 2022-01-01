@@ -7,9 +7,7 @@ const { sign, alg } = require('../suite')
 const { createAccountCredential }    = require('../../node_modules/@kravc/schema/examples')
 const { getKid, createPresentation } = require('../helpers')
 
-const ISSUER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
-const HOLDER_SEED   = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
-const VERIFIER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const randomBytes = length => crypto.randomBytes(length)
 
 describe('jwt/verify(token)', () => {
   let issuer
@@ -17,9 +15,9 @@ describe('jwt/verify(token)', () => {
   let verifier
 
   before(async () => {
-    issuer   = await Identity.fromSeed(ISSUER_SEED)
-    holder   = await Identity.fromSeed(HOLDER_SEED)
-    verifier = await Identity.fromSeed(VERIFIER_SEED)
+    issuer   = await Identity.generate(randomBytes)
+    holder   = await Identity.generate(randomBytes)
+    verifier = await Identity.generate(randomBytes)
   })
 
   it('throws an error if invalid token payload', async () => {

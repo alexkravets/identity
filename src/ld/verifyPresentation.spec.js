@@ -9,16 +9,15 @@ const { alg, type, signDetached }    = require('../suite')
 const { createAccountCredential }    = require('../../node_modules/@kravc/schema/examples')
 const { getKid, createPresentation } = require('../helpers')
 
-const ISSUER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
-const HOLDER_SEED = crypto.randomBytes(Identity.SEED_LENGTH).toString('hex')
+const randomBytes = length => crypto.randomBytes(length)
 
 describe('ld/verifyPresentation(verifiablePresentation)', () => {
   let issuer
   let holder
 
   before(async () => {
-    issuer = await Identity.fromSeed(ISSUER_SEED)
-    holder = await Identity.fromSeed(HOLDER_SEED)
+    issuer = await Identity.generate(randomBytes)
+    holder = await Identity.generate(randomBytes)
   })
 
   it('throws an error if presentation credential holder mismatch', async () => {
